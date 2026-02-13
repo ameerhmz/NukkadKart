@@ -1,6 +1,6 @@
 import { getIO } from '../socket.js';
 import asyncHandler from 'express-async-handler';
-import Request from '../models/Request.js';
+import User from '../models/User.js';
 
 // @desc    Create a new request
 // @route   POST /api/requests
@@ -8,10 +8,14 @@ import Request from '../models/Request.js';
 const createRequest = asyncHandler(async (req, res) => {
     const { vendorId, items } = req.body;
 
+    // Fetch vendor to get current location
+    const vendor = await User.findById(vendorId);
+
     const request = await Request.create({
         customer: req.user._id,
         vendor: vendorId,
-        items
+        items,
+        location: vendor?.location // Snapshot location
     });
 
     if (request) {

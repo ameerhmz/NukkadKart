@@ -22,6 +22,17 @@ const requestSchema = mongoose.Schema({
     },
     totalAmount: {
         type: Number
+    },
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            default: 'Point'
+        },
+        coordinates: {
+            type: [Number],
+            index: '2dsphere'
+        }
     }
 }, {
     timestamps: true

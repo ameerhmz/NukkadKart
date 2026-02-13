@@ -141,6 +141,19 @@ const VendorDashboard = () => {
                 </div>
             </div>
 
+            {/* Analytics Section */}
+            <div className="mb-6">
+                <Link to="/vendor/heatmap" className="block bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-4 rounded-lg shadow-lg">
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <h2 className="text-xl font-bold">Sales Heatmap</h2>
+                            <p className="text-sm opacity-90">See where you sell the most!</p>
+                        </div>
+                        <span className="text-2xl">🗺️</span>
+                    </div>
+                </Link>
+            </div>
+
             {/* Inventory Section */}
             <div className="mb-20">
                 <div className="flex justify-between items-center mb-4">

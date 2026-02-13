@@ -5,7 +5,9 @@ import Register from './pages/Register';
 import VendorDashboard from './pages/VendorDashboard';
 import AddProduct from './pages/AddProduct';
 import CustomerMap from './pages/CustomerMap';
+import CustomerMap from './pages/CustomerMap';
 import VendorProfile from './pages/VendorProfile';
+import VendorHeatmap from './pages/VendorHeatmap';
 import './i18n';
 
 function App() {
@@ -18,6 +20,9 @@ function App() {
         <Route path="/vendor-dashboard" element={<VendorDashboard />} />
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/customer-map" element={<CustomerMap />} />
+        <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/customer-map" element={<CustomerMap />} />
+        <Route path="/vendor/heatmap" element={<VendorHeatmap />} />
         <Route path="/vendor/:id" element={<VendorProfile />} />
       </Routes>
     </Router>
