@@ -4,7 +4,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import VendorDashboard from './pages/VendorDashboard';
 import AddProduct from './pages/AddProduct';
-import './App.css';
+import CustomerMap from './pages/CustomerMap';
+import VendorProfile from './pages/VendorProfile';
 import './i18n';
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/vendor-dashboard" element={<VendorDashboard />} />
         <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/customer-map" element={<CustomerMap />} />
+        <Route path="/vendor/:id" element={<VendorProfile />} />
       </Routes>
     </Router>
   );

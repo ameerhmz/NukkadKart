@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+@theme {
+  --color-nukkad-orange: #ff9f1c;
+  --color-nukkad-green: #2ec4b6;
+  --color-nukkad-blue: #011627;
+}
+
 body {
   background-color: #f3f4f6;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
 }

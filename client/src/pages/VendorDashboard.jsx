@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import { useTranslation } from 'react-i18next';
+import { socket } from '../utils/socket';
 
 const VendorDashboard = () => {
     const { t } = useTranslation();
@@ -9,6 +10,7 @@ const VendorDashboard = () => {
     const [user, setUser] = useState(null);
     const [products, setProducts] = useState([]);
     const [isLive, setIsLive] = useState(false);
+    const watchIdRef = useRef(null);
 
     useEffect(() => {
         const userInfo = localStorage.getItem('userInfo');
@@ -17,9 +19,27 @@ const VendorDashboard = () => {
             setUser(parsedUser);
             setIsLive(parsedUser.isOnline);
             fetchProducts();
+
+            // Connect socket if user is logged in
+            if (!socket.connected) {
+                socket.connect();
+                socket.emit('joinVendorRoom', parsedUser._id);
+            }
+
+            // Listen for new requests
+            socket.on('newRequest', (newReq) => {
+                const customerName = newReq.customer?.name || 'Customer';
+                alert(`New Request from ${customerName}: ${newReq.items}`);
+            });
         } else {
             navigate('/login');
         }
+
+        return () => {
+            if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
+            socket.off('newRequest');
+            socket.disconnect();
+        };
     }, [navigate]);
 
     const fetchProducts = async () => {
@@ -32,10 +52,52 @@ const VendorDashboard = () => {
     };
 
     const toggleLiveStatus = async () => {
-        // Implementation for toggling live status (Phase 4/5 logic, but UI here)
-        // For now just local state
-        setIsLive(!isLive);
-        // TODO: Call API to update status
+        const newStatus = !isLive;
+        setIsLive(newStatus);
+
+        try {
+            // Update status on backend (optional endpoint, or just via location update)
+            // For now, we assume location update sets isOnline=true
+
+            if (newStatus) {
+                startLocationTracking();
+            } else {
+                stopLocationTracking();
+                // Optional: Call API to set offline
+            }
+        } catch (error) {
+            console.error("Error toggling status", error);
+        }
+    };
+
+    const startLocationTracking = () => {
+        if (navigator.geolocation) {
+            watchIdRef.current = navigator.geolocation.watchPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+
+                    // Emit to socket
+                    socket.emit('updateLocation', {
+                        vendorId: user._id,
+                        latitude,
+                        longitude
+                    });
+
+                    // Update backend (debounced in real app, but direct here for simplicity)
+                    api.put('/users/location', { latitude, longitude })
+                        .catch(err => console.error("API Location Update Failed", err));
+                },
+                (error) => console.error("Geo Error", error),
+                { enableHighAccuracy: true }
+            );
+        }
+    };
+
+    const stopLocationTracking = () => {
+        if (watchIdRef.current) {
+            navigator.geolocation.clearWatch(watchIdRef.current);
+            watchIdRef.current = null;
+        }
     };
 
     return (
@@ -45,6 +107,8 @@ const VendorDashboard = () => {
                 <button
                     onClick={() => {
                         localStorage.removeItem('userInfo');
+                        stopLocationTracking();
+                        socket.disconnect();
                         navigate('/login');
                     }}
                     className="text-sm text-red-500"

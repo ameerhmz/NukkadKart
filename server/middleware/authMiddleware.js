@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const asyncHandler = require('express-async-handler');
-const User = require('../models/User');
+import jwt from 'jsonwebtoken';
+import asyncHandler from 'express-async-handler';
+import User from '../models/User.js';
 
 const protect = asyncHandler(async (req, res, next) => {
     let token;
@@ -30,7 +30,6 @@ const protect = asyncHandler(async (req, res, next) => {
     }
 });
 
-// Middleware for vendor only access
 const vendorOnly = (req, res, next) => {
     if (req.user && req.user.role === 'vendor') {
         next();
@@ -40,4 +39,4 @@ const vendorOnly = (req, res, next) => {
     }
 };
 
-module.exports = { protect, vendorOnly };
+export { protect, vendorOnly };

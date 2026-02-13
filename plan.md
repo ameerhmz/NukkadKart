@@ -1,45 +1,54 @@
 # Implementation Plan - NukkadKart
+> "NukkadKart": Empowering Indian Street Vendors Digitally.
 
-NukkadKart is a mobile-first Progressive Web App (PWA) designed to empower street vendors in India by helping them go digital.
+## Current Status (Completed Phases ✅)
+- **Phase 1: Project Setup**: MERN Stack, Vite (React), TailwindCSS v4, i18n (Hindi/English).
+- **Phase 2: Backend Core**: MongoDB connection, User/Product Models, JWT Auth (Vendor/Customer roles).
+- **Phase 3: Vendor Features**:
+  - Live Dashboard (Status toggle).
+  - Product Management (Add/List/Edit).
+  - Real-time Location Tracking (GPS + Socket.io).
+- **Phase 4: Customer Features**:
+  - Interactive Map (Google Maps API) with Live Vendor Pins.
+  - Vendor Profiles & Menu.
+  - "Request Item" feature with real-time notifications to vendors.
 
-## Tech Stack
-- **Frontend**: React.js (Vite), TailwindCSS, i18next (Hindi/English).
-- **Backend**: Node.js, Express.js.
-- **Database**: MongoDB Atlas (Mongoose).
-- **Real-time**: Socket.io.
-- **Maps**: Google Maps API.
-- **Authentication**: JWT.
+## Work Left (Pending & In-Progress 🚧)
+- [x] **Backend Refactor**: Migration to ECMAScript Modules (ESM) `import`/`export`.
+- **Analytics**: "Best Location" Heatmap (7-day sales avg) & Profit Tracking.
+- **Advanced UI**: Trending/Popularity Badges, Animations, Responsive Mobile Layout Polish.
+- **PWA**: Offline Capabilities & Installability.
 
-## Directory Structure
-```text
-NukkadKart/
-├── client/         # React Frontend
-├── server/         # Node/Express Backend
-└── plan.md         # This file
-```
+## Suggested Features 💡
+- **Smart Inventory**: Suggest restocking based on past sales trends.
+- **Group Buying**: Allow customers in the same area to pool requests for bulk discounts.
+- **Voice Commands**: Accessibility for vendors to add products via voice (Hindi/English).
+- **QR Identity**: Generate printable QR codes for vendors to share their digital shop.
 
-## Phase 1: Project Setup & Dependencies
-- Initialize Root & Directory Structure.
-- Setup Server (Node/Express) & Install Backend Deps:
-    - `express`, `mongoose`, `dotenv`, `cors`, `socket.io`, `jsonwebtoken`, `bcryptjs`.
-- Setup Client (React/Vite) & Install Frontend Deps:
-    - `axios`, `react-router-dom`, `socket.io-client`, `i18next`, `react-i18next`, `google-maps-react` (or similar), `chart.js`, `html5-qrcode`.
-- Configure i18n skeleton.
+---
 
-## Phase 2: Backend Core
-- Database Connection (MongoDB Atlas).
-- User Models (Vendor/Customer).
-- Auth Routes (JWT).
+## 👥 Work Division
 
-## Phase 3: Vendor Features
-- Vendor Dashboard UI.
-- Product Management (Add/Edit/Delete).
-- GPS Location Logic.
+### Ameer (Backend & Logic Lead)
+**Focus**: Server Architecture, Database, intricate Logic.
+1.  **Refactor Backend to ESM**: Update `server/` to use `import`/`export`.
+    -   *Crucial for modern Node.js features and consistency.*
+2.  **Heatmap Logic**: Implement Aggregation Pipeline in MongoDB to calculate "Best Selling Locations".
+3.  **Socket.io Optimization**: Ensure robust reconnection logic and room management.
+4.  **Analytics API**: Create endpoints for Daily/Weekly profit charts.
 
-## Phase 4: Customer Features
-- Customer Map View.
-- Vendor Discovery & Profile.
+### Harsh (Frontend & UI/UX Lead)
+**Focus**: Client-side Experience, Visuals, Testing.
+1.  **Vendor Heatmap UI**: Integrate Google Maps Heatmap Layer using the data from Ameer's API.
+2.  **UI Polish**: Improve `CustomerMap` markers (custom icons), Vendor Profile aesthetics (animations), and Mobile Responsiveness.
+3.  **PWA Setup**: Configure `manifest.json`, Service Workers for offline support.
+4.  **Testing**:
+    -   Simulate "Customer" flow: Login -> Map -> Request.
+    -   Verify "Vendor" flow: Dashboard -> Receive Request -> Update Status.
 
-## Phase 5: Real-time & Advanced
-- Socket.io Setup (Location/Requests).
-- Analytics & Profit Tracking.
+---
+
+## Improvements Needed 🛠
+- **Security**: Rate limiting on API requests, Input validation (Zod/Joi).
+- **Performance**: Lazy loading for Map components, specific bundle splitting.
+- **Error Handling**: Better UI feedback (Toasts instead of Alerts).

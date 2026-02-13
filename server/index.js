@@ -1,22 +1,24 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
-// const socketIo = require('socket.io'); // Will be used later
-// const http = require('http');
+import express from 'express';
+import http from 'http';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { initSocket } from './socket.js';
+import connectDB from './config/db.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import authRoutes from './routes/authRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import requestRoutes from './routes/requestRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
-
-const connectDB = require('./config/db');
-const { notFound, errorHandler } = require('./middleware/errorMiddleware');
-const authRoutes = require('./routes/authRoutes');
-const productRoutes = require('./routes/productRoutes');
 
 connectDB();
 
 const app = express();
-// const server = http.createServer(app);
-// const io = socketIo(server);
+const server = http.createServer(app);
+
+// Initialize Socket.io
+const io = initSocket(server);
 
 app.use(cors());
 app.use(express.json());
@@ -29,10 +31,12 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/requests', requestRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
