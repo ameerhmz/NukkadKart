@@ -3,7 +3,8 @@ import {
     getProducts,
     createProduct,
     deleteProduct,
-    updateProduct
+    updateProduct,
+    getProductById
 } from '../controllers/productController.js';
 import { protect, vendorOnly } from '../middleware/authMiddleware.js';
 
@@ -14,6 +15,7 @@ router.route('/')
     .post(protect, vendorOnly, createProduct);
 
 router.route('/:id')
+    .get(protect, vendorOnly, getProductById)
     .delete(protect, vendorOnly, deleteProduct)
     .put(protect, vendorOnly, updateProduct);
 
