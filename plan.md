@@ -14,7 +14,7 @@
   - "Request Item" feature with real-time notifications to vendors.
 
 ## Work Left (Pending & In-Progress 🚧)
-- [x] **Backend Refactor**: Migration to ECMAScript Modules (ESM) `import`/`export`.
+- [x] **Backend Refactor**: Migration to ECMAScript Modules (ESM) `import`/`export` (Completed).
 - **Analytics**: "Best Location" Heatmap (7-day sales avg) & Profit Tracking.
 - **Advanced UI**: Trending/Popularity Badges, Animations, Responsive Mobile Layout Polish.
 - **PWA**: Offline Capabilities & Installability.

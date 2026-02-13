@@ -1,0 +1,50 @@
+[dotenv@17.3.1] injecting env (4) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+Server is running on port 5001
+New client connected: tKVaNXPQ24zrS9R-AAAB
+Client disconnected: tKVaNXPQ24zrS9R-AAAB
+New client connected: -Dj2c1Dt5wXya5ZGAAAE
+New client connected: xj8HxnZ5YZE7x8WNAAAI
+MongoDB Connected: ac-xktxjg2-shard-00-00.z6yv59r.mongodb.net
+Client disconnected: -Dj2c1Dt5wXya5ZGAAAE
+New client connected: o0CrAdrL5lv1RAfKAACq
+Client disconnected: xj8HxnZ5YZE7x8WNAAAI
+New client connected: gWwpORFTfs5s0CXPAAGW
+Socket gWwpORFTfs5s0CXPAAGW joined vendor room: 698ec4579992e8598cef8799
+Socket gWwpORFTfs5s0CXPAAGW joined vendor room: 698ec4579992e8598cef8799
+Client disconnected: gWwpORFTfs5s0CXPAAGW
+New client connected: ICUdLUwdrz_dMtfnAAIS
+Socket ICUdLUwdrz_dMtfnAAIS joined vendor room: 698ec4579992e8598cef8799
+Socket ICUdLUwdrz_dMtfnAAIS joined vendor room: 698ec4579992e8598cef8799
+Client disconnected: ICUdLUwdrz_dMtfnAAIS
+New client connected: lMWBiXE90NpEk9-yAAIV
+New client connected: CXQvRRtsoaTTxR1OAAIX
+New client connected: Wm9n2-xr1B_3NbB5AAIZ
+Client disconnected: lMWBiXE90NpEk9-yAAIV
+Client disconnected: CXQvRRtsoaTTxR1OAAIX
+New client connected: IL8zd0xIekERdrYdAAId
+Client disconnected: Wm9n2-xr1B_3NbB5AAIZ
+Client disconnected: IL8zd0xIekERdrYdAAId
+New client connected: rLHlfTxPlNmE78MvAAIg
+Client disconnected: rLHlfTxPlNmE78MvAAIg
+New client connected: a5KpW22ChgNWGjUFAALm
+New client connected: zdnrw4_Y-1JzwRBtAAMc
+Socket zdnrw4_Y-1JzwRBtAAMc joined vendor room: 698ec4579992e8598cef8799
+Socket zdnrw4_Y-1JzwRBtAAMc joined vendor room: 698ec4579992e8598cef8799
+Client disconnected: a5KpW22ChgNWGjUFAALm
+New client connected: OgGTCtP8x2YqNTjCAAMe
+Client disconnected: zdnrw4_Y-1JzwRBtAAMc
+New client connected: Z-9irMdiEaUgbPoVAAMh
+Socket Z-9irMdiEaUgbPoVAAMh joined vendor room: 698ec4579992e8598cef8799
+Socket Z-9irMdiEaUgbPoVAAMh joined vendor room: 698ec4579992e8598cef8799
+Client disconnected: Z-9irMdiEaUgbPoVAAMh
+Client disconnected: OgGTCtP8x2YqNTjCAAMe
+New client connected: bOqBF2EG_c-xoW37AAMk
+Socket bOqBF2EG_c-xoW37AAMk joined vendor room: 698ec4579992e8598cef8799
+Socket bOqBF2EG_c-xoW37AAMk joined vendor room: 698ec4579992e8598cef8799
+New client connected: N6-nTVbvThibOM7AAAMn
+Socket N6-nTVbvThibOM7AAAMn joined vendor room: 698ec4579992e8598cef8799
+Socket N6-nTVbvThibOM7AAAMn joined vendor room: 698ec4579992e8598cef8799
+Client disconnected: N6-nTVbvThibOM7AAAMn
+New client connected: Acat_jVsgAooCs8VAAMq
+Socket Acat_jVsgAooCs8VAAMq joined vendor room: 698ec4579992e8598cef8799
+Socket Acat_jVsgAooCs8VAAMq joined vendor room: 698ec4579992e8598cef8799

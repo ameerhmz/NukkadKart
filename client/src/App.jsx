@@ -7,6 +7,9 @@ import AddProduct from './pages/AddProduct';
 import CustomerMap from './pages/CustomerMap';
 import VendorProfile from './pages/VendorProfile';
 import VendorHeatmap from './pages/VendorHeatmap';
+import QuickSale from './pages/QuickSale';
+import EditProduct from './pages/EditProduct';
+import Wishlist from './pages/Wishlist';
 import './i18n';
 
 function App() {
@@ -21,6 +24,9 @@ function App() {
         <Route path="/customer-map" element={<CustomerMap />} />
         <Route path="/vendor/heatmap" element={<VendorHeatmap />} />
         <Route path="/vendor/:id" element={<VendorProfile />} />
+        <Route path="/quick-sale" element={<QuickSale />} />
+        <Route path="/edit-product/:id" element={<EditProduct />} />
+        <Route path="/wishlist" element={<Wishlist />} />
       </Routes>
     </Router>
   );

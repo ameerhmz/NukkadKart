@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../utils/api';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowLeft,
     Package,
@@ -9,7 +9,10 @@ import {
     Box,
     Save,
     Trash2,
-    AlertCircle
+    AlertCircle,
+    ScanBarcode,
+    ShoppingCart,
+    CheckCircle2
 } from 'lucide-react';
 
 const EditProduct = () => {
@@ -37,7 +40,7 @@ const EditProduct = () => {
                     barcode: data.barcode || ''
                 });
             } catch (err) {
-                setError('Failed to load product details.');
+                setError('Failed to load product intelligence.');
                 console.error(err);
             } finally {
                 setIsLoading(false);
@@ -53,144 +56,158 @@ const EditProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSaving(true);
+        setError(null);
         try {
             await api.put(`/products/${id}`, formData);
             navigate('/vendor-dashboard');
         } catch (err) {
-            setError('Failed to update product.');
+            setError('Synchronization failed. Check network constants.');
         } finally {
             setIsSaving(false);
         }
     };
 
     const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to delete this product?')) {
+        if (window.confirm('Erase this data point from inventory?')) {
             try {
                 await api.delete(`/products/${id}`);
                 navigate('/vendor-dashboard');
             } catch (err) {
-                setError('Failed to delete product.');
+                setError('Decommissioning failed.');
             }
         }
     };
 
     if (isLoading) return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="flex items-center justify-center min-h-screen premium-bg">
             <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                className="w-8 h-8 border-4 border-nukkad-orange border-t-transparent rounded-full"
+                animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+                className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)]"
             />
         </div>
     );
 
     return (
-        <div className="p-4 bg-gray-50 min-h-screen font-sans text-nukkad-blue">
-            <header className="flex items-center justify-between mb-8 pt-4 px-1">
-                <div className="flex items-center gap-4">
+        <div className="min-h-screen bg-animated text-white pb-20 overflow-hidden relative">
+            {/* Background Effects */}
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px] -z-10 animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[120px] -z-10 animate-float" />
+
+            {/* Header */}
+            <header className="px-6 pt-10 pb-6 flex items-center justify-between sticky top-0 bg-black/40 backdrop-blur-3xl z-30 border-b border-white/5">
+                <div className="flex items-center gap-6">
                     <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={() => navigate('/vendor-dashboard')}
-                        className="p-2 sm:p-3 bg-white rounded-2xl shadow-sm border border-gray-100"
+                        className="w-14 h-14 glass-ultra rounded-2xl flex items-center justify-center hover:text-primary transition-all border border-white/10 glow-primary"
                     >
-                        <ArrowLeft size={20} />
+                        <ArrowLeft size={24} />
                     </motion.button>
-                    <h1 className="text-xl sm:text-2xl font-black tracking-tight">Edit Product</h1>
+                    <div>
+                        <h1 className="text-3xl font-black uppercase tracking-tighter italic gradient-text leading-none">Modify Asset</h1>
+                        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mt-1">Registry Refinement</p>
+                    </div>
                 </div>
                 <button
                     onClick={handleDelete}
-                    className="p-3 text-red-500 hover:bg-red-50 rounded-2xl transition-colors active:scale-95"
+                    className="w-14 h-14 glass-ultra rounded-2xl flex items-center justify-center text-white/20 hover:text-red-500 hover:border-red-500/50 transition-all border border-white/10 active:scale-90 glow-primary"
                 >
                     <Trash2 size={24} />
                 </button>
             </header>
 
-            {error && (
-                <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-6 bg-red-50 border border-red-200 text-red-600 p-4 rounded-[2rem] flex items-center gap-3"
-                >
-                    <AlertCircle size={20} />
-                    <p className="text-[11px] font-black uppercase tracking-tight">{error}</p>
-                </motion.div>
-            )}
+            <main className="px-6 max-w-2xl mx-auto mt-10">
+                <AnimatePresence>
+                    {error && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="glass-dark mb-10 p-6 rounded-3xl border border-red-500/30 flex items-center gap-5 text-red-400 neon-red"
+                        >
+                            <AlertCircle size={24} />
+                            <p className="text-[11px] font-black uppercase tracking-widest">{error}</p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-white p-5 rounded-[2rem] border border-gray-100 shadow-sm space-y-5">
-                        <section>
-                            <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 px-1">
-                                <Package size={12} /> Product Name
-                            </label>
-                            <input
-                                type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="w-full p-4 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-nukkad-orange font-bold text-nukkad-blue shadow-inner"
-                                required
-                            />
-                        </section>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <section>
-                                <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 px-1">
-                                    <IndianRupee size={12} /> Price
-                                </label>
+                <form onSubmit={handleSubmit} className="space-y-10">
+                    <div className="glass-dark p-10 rounded-[4rem] space-y-10 neon-blue">
+                        <div className="space-y-3">
+                            <label className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 ml-4 italic">Designation</label>
+                            <div className="relative group">
+                                <ShoppingCart className="absolute left-8 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-primary transition-colors" size={24} />
                                 <input
-                                    type="number"
-                                    name="price"
-                                    value={formData.price}
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full p-4 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-nukkad-orange font-bold text-nukkad-blue shadow-inner"
+                                    className="input-premium pl-20 !bg-white/5 !border-white/5 focus:!border-primary/50"
+                                    placeholder="Product Name"
                                     required
                                 />
-                            </section>
-                            <section>
-                                <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 px-1">
-                                    <Box size={12} /> Stock
-                                </label>
-                                <input
-                                    type="number"
-                                    name="stock"
-                                    value={formData.stock}
-                                    onChange={handleChange}
-                                    className="w-full p-4 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-nukkad-orange font-bold text-nukkad-blue shadow-inner"
-                                    required
-                                />
-                            </section>
+                            </div>
                         </div>
 
-                        <section>
-                            <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 px-1">
-                                Barcode
-                            </label>
-                            <input
-                                type="text"
-                                name="barcode"
-                                value={formData.barcode}
-                                onChange={handleChange}
-                                className="w-full p-4 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-nukkad-orange font-bold text-nukkad-blue shadow-inner"
-                                placeholder="Optional"
-                            />
-                        </section>
+                        <div className="grid grid-cols-2 gap-8">
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 ml-4 italic">Valuation</label>
+                                <div className="relative group">
+                                    <IndianRupee className="absolute left-8 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-primary transition-colors" size={22} />
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        value={formData.price}
+                                        onChange={handleChange}
+                                        className="input-premium pl-20 !bg-white/5 !border-white/5 focus:!border-primary/50"
+                                        placeholder="0.00"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 ml-4 italic">Units</label>
+                                <div className="relative group">
+                                    <Package className="absolute left-8 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-primary transition-colors" size={22} />
+                                    <input
+                                        type="number"
+                                        name="stock"
+                                        value={formData.stock}
+                                        onChange={handleChange}
+                                        className="input-premium pl-20 !bg-white/5 !border-white/5 focus:!border-primary/50"
+                                        placeholder="In Stock"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            <label className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 ml-4 italic">Grid Signature</label>
+                            <div className="relative group">
+                                <ScanBarcode className="absolute left-8 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-primary transition-colors" size={24} />
+                                <input
+                                    type="text"
+                                    name="barcode"
+                                    value={formData.barcode}
+                                    onChange={handleChange}
+                                    className="input-premium pl-20 !bg-white/5 !border-white/5 focus:!border-primary/50 text-white/60"
+                                    placeholder="Unique Signature"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <motion.button
-                        whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        type="submit"
                         disabled={isSaving}
-                        className="w-full bg-nukkad-orange text-white py-5 rounded-[2.5rem] font-black text-sm uppercase tracking-widest shadow-xl shadow-nukkad-orange/20 flex items-center justify-center gap-3 disabled:opacity-50"
+                        type="submit"
+                        className="btn-premium w-full flex items-center justify-center gap-4 !py-6 !rounded-[2.5rem] shadow-primary/20 text-[11px] font-black uppercase tracking-[0.3em]"
                     >
-                        {isSaving ? 'Updating...' : <><Save size={18} /> Update Product</>}
+                        {isSaving ? 'Recalibrating...' : <><CheckCircle2 size={24} /> Commit Intelligence</>}
                     </motion.button>
                 </form>
-            </motion.div>
+            </main>
         </div>
     );
 };

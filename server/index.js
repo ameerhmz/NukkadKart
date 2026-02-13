@@ -11,8 +11,8 @@ import requestRoutes from './routes/requestRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
 
-// dotenv.config();
-// connectDB();
+dotenv.config();
+connectDB();
 
 const app = express();
 const server = http.createServer(app);
@@ -20,10 +20,14 @@ const server = http.createServer(app);
 // Initialize Socket.io
 const io = initSocket(server);
 
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:5174", "http://127.0.0.1:5174"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"]
+}));
 app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.get('/', (req, res) => {
     res.send('NukkadKart API is running');
@@ -39,5 +43,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on port ${PORT} (MOCK MODE ACTIVE)`);
+    console.log(`Server is running on port ${PORT}`);
 });

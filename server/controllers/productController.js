@@ -1,110 +1,218 @@
-import asyncHandler from 'express-async-handler';
-
-// IN-MEMORY STORAGE (Temporary as requested)
-let products = [
-    { _id: '1', vendor: 'mock-vendor-id-123', name: 'Samosa', price: 15, stock: 50, barcode: '123456789' },
-    { _id: '2', vendor: 'mock-vendor-id-123', name: 'Chai', price: 10, stock: 100, barcode: '987654321' },
-    { _id: '3', vendor: 'mock-vendor-id-123', name: 'Bread Pakora', price: 20, stock: 30, barcode: '456123789' },
-    { _id: '4', vendor: 'mock-vendor-id-123', name: 'Vada Pav', price: 25, stock: 40, barcode: '789456123' },
-    { _id: '5', vendor: 'mock-vendor-id-123', name: 'Lassi', price: 30, stock: 20, barcode: '321654987' }
-];
+import Product from '../models/Product.js';
 
 // @desc    Get all products for logged in vendor
 // @route   GET /api/products
 // @access  Private (Vendor)
-const getProducts = asyncHandler(async (req, res) => {
-    const vendorProducts = products.filter(p => p.vendor === req.user._id);
-    res.json(vendorProducts);
-});
+const getProducts = async (req, res, next) => {
+    try {
+        const products = await Product.find({ vendor: req.user._id });
+        res.json(products);
+    } catch (error) {
+        next(error);
+    }
+};
 
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private (Vendor)
-const createProduct = asyncHandler(async (req, res) => {
-    const { name, price, costPrice, stock, barcode, image } = req.body;
+const createProduct = async (req, res, next) => {
+    try {
+        const { name, price, costPrice, stock, barcode, image, category } = req.body;
 
-    if (barcode) {
-        const productExists = products.find(p => p.barcode === barcode);
-        if (productExists) {
-            res.status(400);
-            throw new Error('Product with this barcode already exists');
+        if (barcode) {
+            const productExists = await Product.findOne({ barcode });
+            if (productExists) {
+                res.status(400);
+                throw new Error('Product with this barcode already exists');
+            }
         }
+
+        const product = await Product.create({
+            vendor: req.user._id,
+            name,
+            price,
+            costPrice,
+            stock,
+            barcode,
+            image,
+            category
+        });
+
+        if (product) {
+            res.status(201).json(product);
+        } else {
+            res.status(400);
+            throw new Error('Invalid product data');
+        }
+    } catch (error) {
+        next(error);
     }
-
-    const newProduct = {
-        _id: Math.random().toString(36).substr(2, 9),
-        vendor: req.user._id,
-        name,
-        price: Number(price),
-        costPrice: Number(costPrice || 0),
-        stock: Number(stock),
-        barcode,
-        image,
-        createdAt: new Date()
-    };
-
-    products.push(newProduct);
-    res.status(201).json(newProduct);
-});
+};
 
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
 // @access  Private (Vendor)
-const deleteProduct = asyncHandler(async (req, res) => {
-    const initialLength = products.length;
-    products = products.filter(p => p._id !== req.params.id || p.vendor !== req.user._id);
+const deleteProduct = async (req, res, next) => {
+    try {
+        const product = await Product.findById(req.params.id);
 
-    if (products.length < initialLength) {
-        res.json({ message: 'Product removed' });
-    } else {
-        res.status(404);
-        throw new Error('Product not found or not authorized');
+        if (product) {
+            if (product.vendor.toString() !== req.user._id.toString()) {
+                res.status(401);
+                throw new Error('Not authorized to delete this product');
+            }
+
+            await product.deleteOne();
+            res.json({ message: 'Product removed' });
+        } else {
+            res.status(404);
+            throw new Error('Product not found');
+        }
+    } catch (error) {
+        next(error);
     }
-});
+};
 
 // @desc    Update a product
 // @route   PUT /api/products/:id
 // @access  Private (Vendor)
-const updateProduct = asyncHandler(async (req, res) => {
-    const { name, price, costPrice, stock, barcode, image } = req.body;
-    const index = products.findIndex(p => p._id === req.params.id && p.vendor === req.user._id);
+const updateProduct = async (req, res, next) => {
+    try {
+        const { name, price, costPrice, stock, barcode, image } = req.body;
 
-    if (index !== -1) {
-        products[index] = {
-            ...products[index],
-            name: name || products[index].name,
-            price: price !== undefined ? Number(price) : products[index].price,
-            costPrice: costPrice !== undefined ? Number(costPrice) : products[index].costPrice,
-            stock: stock !== undefined ? Number(stock) : products[index].stock,
-            barcode: barcode || products[index].barcode,
-            image: image || products[index].image,
-            updatedAt: new Date()
-        };
-        res.json(products[index]);
-    } else {
-        res.status(404);
-        throw new Error('Product not found or not authorized');
+        const product = await Product.findById(req.params.id);
+
+        if (product) {
+            if (product.vendor.toString() !== req.user._id.toString()) {
+                res.status(401);
+                throw new Error('Not authorized to update this product');
+            }
+
+            product.name = name || product.name;
+            product.price = price !== undefined ? price : product.price;
+            product.costPrice = costPrice !== undefined ? costPrice : product.costPrice;
+            product.stock = stock !== undefined ? stock : product.stock;
+            product.barcode = barcode || product.barcode;
+            product.image = image || product.image;
+
+            const updatedProduct = await product.save();
+            res.json(updatedProduct);
+        } else {
+            res.status(404);
+            throw new Error('Product not found');
+        }
+    } catch (error) {
+        next(error);
     }
-});
+};
 
 // @desc    Get a product by ID
 // @route   GET /api/products/:id
 // @access  Private (Vendor)
-const getProductById = asyncHandler(async (req, res) => {
-    const product = products.find(p => p._id === req.params.id && p.vendor === req.user._id);
+const getProductById = async (req, res, next) => {
+    try {
+        const product = await Product.findById(req.params.id);
 
-    if (product) {
-        res.json(product);
-    } else {
-        res.status(404);
-        throw new Error('Product not found');
+        if (product) {
+            if (product.vendor.toString() !== req.user._id.toString()) {
+                // Check authorization if needed
+            }
+            res.json(product);
+        } else {
+            res.status(404);
+            throw new Error('Product not found');
+        }
+    } catch (error) {
+        next(error);
     }
-});
+};
+
+// @desc    Get products by Vendor ID (Public)
+// @route   GET /api/products/vendor/:vendorId
+// @access  Public
+const getProductsByVendor = async (req, res, next) => {
+    try {
+        const products = await Product.find({ vendor: req.params.vendorId });
+        res.json(products);
+    } catch (error) {
+        next(error);
+    }
+};
+
+// @desc    Lookup product by barcode (Internal DB + External API)
+// @route   GET /api/products/lookup/:barcode
+// @access  Private (Vendor)
+const lookupProduct = async (req, res, next) => {
+    try {
+        const { barcode } = req.params;
+        const productDetails = await lookupBarcode(barcode);
+
+        if (productDetails) {
+            res.json({ found: true, ...productDetails });
+        } else {
+            res.status(404).json({ found: false, message: 'Product not found via external APIs' });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+// @desc    Process a Quick Sale (POS Mode)
+// @route   POST /api/products/sell
+// @access  Private (Vendor)
+const processQuickSale = async (req, res, next) => {
+    try {
+        const { barcode, productId, quantity = 1 } = req.body;
+
+        // Find product by ID or Barcode AND Vendor
+        let product;
+        if (productId) {
+            product = await Product.findOne({ _id: productId, vendor: req.user._id });
+        } else if (barcode) {
+            product = await Product.findOne({ barcode, vendor: req.user._id });
+        }
+
+        if (!product) {
+            res.status(404);
+            throw new Error('Product not found in your inventory');
+        }
+
+        if (product.stock < quantity) {
+            res.status(400);
+            throw new Error(`Insufficient stock. Available: ${product.stock}`);
+        }
+
+        // Deduct stock
+        product.stock -= quantity;
+        await product.save();
+
+        // Record sale (In a real app, create an Order/Transaction record here)
+        // For now, we just return success and the updated product
+
+        res.json({
+            success: true,
+            product: {
+                name: product.name,
+                price: product.price,
+                newStock: product.stock
+            },
+            totalAmount: product.price * quantity
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
 
 export {
     getProducts,
     createProduct,
     deleteProduct,
     updateProduct,
-    getProductById
+    getProductById,
+    lookupProduct,
+    processQuickSale,
+    getProductsByVendor
 };
+
+import { lookupBarcode } from '../utils/barcodeService.js';

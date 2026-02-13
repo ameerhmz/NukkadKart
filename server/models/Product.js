@@ -32,6 +32,12 @@ const productSchema = mongoose.Schema({
     image: {
         type: String,
         required: false
+    },
+    category: {
+        type: String,
+        required: true,
+        default: 'Snacks',
+        enum: ['Snacks', 'Drinks', 'Meals', 'Desserts', 'Other']
     }
 }, {
     timestamps: true

@@ -1,0 +1,53 @@
+[dotenv@17.3.1] injecting env (4) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+Server is running on port 5001
+New client connected: UlrFFk-_7cXe5uinAAAB
+New client connected: sl8WZtvwM7CDi0SjAAAD
+MongoDB Connected: ac-xktxjg2-shard-00-00.z6yv59r.mongodb.net
+New client connected: U9O5U-42AwOrkvyyAAAF
+Client disconnected: UlrFFk-_7cXe5uinAAAB
+JsonWebTokenError: jwt malformed
+    at module.exports [as verify] (/Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/node_modules/jsonwebtoken/verify.js:70:17)
+    at file:///Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/middleware/authMiddleware.js:15:33
+    at asyncUtilWrap (/Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/node_modules/express-async-handler/index.js:3:20)
+    at Layer.handleRequest (/Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/node_modules/router/lib/layer.js:152:17)
+    at /Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/node_modules/router/index.js:295:15
+    at param (/Users/ameerhamza/Documents/NPGC_Hackathon/NukkadKart/server/node_modules/router/index.js:600:14)
+New client connected: 6F4cMl5icT3_HyL1AAAI
+Socket 6F4cMl5icT3_HyL1AAAI joined vendor room: 698ec4579992e8598cef8799
+Socket 6F4cMl5icT3_HyL1AAAI joined vendor room: 698ec4579992e8598cef8799
+Client disconnected: 6F4cMl5icT3_HyL1AAAI
+New client connected: b86m6BrPJd6p6sKbAAAL
+Socket b86m6BrPJd6p6sKbAAAL joined vendor room: 698ec4579992e8598cef8799
+Socket b86m6BrPJd6p6sKbAAAL joined vendor room: 698ec4579992e8598cef8799
+Client disconnected: b86m6BrPJd6p6sKbAAAL
+New client connected: 733KtnWacNzW6smaAAAO
+New client connected: dM_AGLhSBzUDF5Y-AAAQ
+New client connected: 16HODJwnbiDMTMsVAAAS
+Client disconnected: 733KtnWacNzW6smaAAAO
+New client connected: 13TutQPlgNqb-3bQAAAV
+Client disconnected: dM_AGLhSBzUDF5Y-AAAQ
+Client disconnected: 13TutQPlgNqb-3bQAAAV
+New client connected: aLlvAvxhj5oZbiFJAAAX
+Client disconnected: 16HODJwnbiDMTMsVAAAS
+New client connected: f2E5A_L066nzrtLKAAAb
+Client disconnected: f2E5A_L066nzrtLKAAAb
+New client connected: kuDtCc-3fqtAmmYfAAAd
+Client disconnected: aLlvAvxhj5oZbiFJAAAX
+Client disconnected: kuDtCc-3fqtAmmYfAAAd
+New client connected: LlIc0rngl39j2uB7AAAf
+Client disconnected: LlIc0rngl39j2uB7AAAf
+New client connected: Zfqf19OXdEah7vtCAAAi
+Client disconnected: Zfqf19OXdEah7vtCAAAi
+New client connected: Nq0bW0HyNOtk0rPYAAAk
+Client disconnected: Nq0bW0HyNOtk0rPYAAAk
+New client connected: DTk8bIPF0n36JEXkAAAq
+Client disconnected: DTk8bIPF0n36JEXkAAAq
+New client connected: oupOLnyJtxRRfSJUAAAw
+Client disconnected: oupOLnyJtxRRfSJUAAAw
+New client connected: BVqTCW-Bzl-lsoipAAU7
+Socket BVqTCW-Bzl-lsoipAAU7 joined vendor room: 698ec4579992e8598cef8799
+Socket BVqTCW-Bzl-lsoipAAU7 joined vendor room: 698ec4579992e8598cef8799
