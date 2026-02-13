@@ -11,9 +11,8 @@ import requestRoutes from './routes/requestRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
 
-dotenv.config();
-
-connectDB();
+// dotenv.config();
+// connectDB();
 
 const app = express();
 const server = http.createServer(app);
@@ -39,6 +38,6 @@ app.use('/api/analytics', analyticsRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT} (MOCK MODE ACTIVE)`);
 });
